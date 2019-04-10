@@ -29,7 +29,7 @@ def collectSubData(subm):
     subData = list() #list to store data points
     title = subm['title']
     sub_id = subm['id']
-    created = datetime.datetime.fromtimestamp(subm['created_utc']) # MGTOW = 1442108090
+    created = datetime.datetime.fromtimestamp(subm['created_utc']) # MGTOW = 1307205635 - 06/04/2011
 
     subData.append((sub_id, title, created))
     subStats[sub_id] = subData
@@ -38,7 +38,7 @@ def collectComData(com):
     comData = list()
     body = com['body']
     com_id = com['id']
-    created = datetime.datetime.fromtimestamp(com['created_utc']) # MGTOW = 1442108090
+    created = datetime.datetime.fromtimestamp(com['created_utc']) # MGTOW = 1307205635 - 06/04/2011
 
     comData.append((com_id, body, created))
     comStats[com_id] = comData
@@ -49,9 +49,9 @@ def collectComData(com):
 #Subreddit to query
 sub='MGTOW'
 #before and after dates
-before = '1354694719' # 04/08/2019
+before = '1554681600' # 04/08/2019
 after = '1307205635' # 06/04/2011
-query = '' # submissions with "Screenshot" in the title -> let's retire
+query = '' # store all submissions and comments
 subCount = 0
 subStats = {}
 comCount = 0
@@ -91,10 +91,6 @@ print(len(data_com))
 
 print(str(len(subStats)) + " submissions have added to list")
 print(str(len(comStats)) + " Coments have added to list")
-'''print("1st entry is:")
-print(list(subStats.values())[0][0][1] + " created: " + str(list(subStats.values())[0][0][5]))
-print("Last entry is:")
-print(list(subStats.values())[-1][0][1] + " created: " + str(list(subStats.values())[-1][0][5]))'''
 
 '''Upload to CSV file'''
 
