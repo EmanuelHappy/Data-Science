@@ -1,5 +1,3 @@
-'''Import the relevant modules'''
-
 import requests
 import json
 import csv
@@ -29,9 +27,11 @@ def collectComData(com):
     comData.append((com_id, body, author, score, parent_id, created))
     comStats[com_id] = comData
 
+'''Build Function that write the csv'''
+
 def updateSubs_and_Coments_file(sub):
     upload_com_count = 0
-    file = f"Comments-Data/{sub}_Comments.csv"
+    file = "Comments-Data/{}_Comments.csv".format(sub)
     with open(file, 'w', newline='', encoding='utf-8') as file:
         a = csv.writer(file)
         headers = ["ID", "Comment", "Author", "Score", "Parent id", "Publish Date"]
@@ -43,7 +43,7 @@ def updateSubs_and_Coments_file(sub):
 
         print(str(upload_com_count) + " comments have been uploaded")
 
-'''Where and what data will we be storing?'''
+'''Storing data'''
 
 #List of subreddits:
 Subreddits = ['MGTOW', 'exredpill', 'RedPillParenting', 'redpillbooks', 'TheRedPill', 'RedPillWomen', 'asktrp',
@@ -52,7 +52,7 @@ Subreddits = ['MGTOW', 'exredpill', 'RedPillParenting', 'redpillbooks', 'TheRedP
               'MensRants', 'MRRef', 'FeMRADebates', 'againstmensrights', 'TheBluePill']
 
 
-'''Run code and loop until all submissions are collected'''
+'''Run code and loop until all comments are collected'''
 
 for sub in Subreddits:
     # before and after dates
@@ -68,10 +68,14 @@ for sub in Subreddits:
 # from the 'after' date up untill before date
 
 #while len(data_com) > 0:
+#starting with an small data collections, I ommit the loop, so only the first 500 comments will be added
+
     for coms in data_com:
         collectComData(coms)
         comCount+=1
-    # Calls getPushshiftDataComs() with the created date of the las coment
+
+    # Calls getPushshiftDataComs() with the created date of the las comment
+
     print(len(data_com))
     print(str(datetime.datetime.fromtimestamp(data_com[-1]['created_utc'])))
     after = data_com[-1]['created_utc']
@@ -79,11 +83,10 @@ for sub in Subreddits:
 
     print(len(data_com))
 
-    '''Check submissions'''
+    '''Check Comments'''
 
-    print(str(len(comStats)) + " Coments have added to list")
+    print(str(len(comStats)) + " Comments have added to list")
 
     '''Upload to CSV file'''
-
 
     updateSubs_and_Coments_file(sub)

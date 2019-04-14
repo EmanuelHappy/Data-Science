@@ -1,5 +1,3 @@
-'''Import the relevant modules'''
-
 import requests
 import json
 import csv
@@ -39,6 +37,8 @@ def collectSubData(subm):
     subData.append((sub_id, title, author, score, numComms, over_18, selftext, description, created))
     subStats[sub_id] = subData
 
+'''Build Function that write the csv'''
+
 def updateSubs__file(sub):
     upload_subm_count = 0
     file = f"Submissions-Data/{sub}_Submissions.csv"
@@ -54,7 +54,7 @@ def updateSubs__file(sub):
 
         print(str(upload_subm_count) + f" submissions have been uploaded at {sub}.csv")
 
-'''Where and what data will we be storing?'''
+'''Storing data'''
 
 #List of subreddits:
 Subreddits = ['MGTOW', 'exredpill', 'RedPillParenting', 'redpillbooks', 'TheRedPill', 'RedPillWomen', 'asktrp',
@@ -74,13 +74,19 @@ for sub in Subreddits:
     subStats = {}
 
     data = getPushshiftDataSubmissions(query, after, before, sub)
+
 # Will run until all posts have been gathered
 # from the 'after' date up untill before date
+
+# while len(data_com) > 0::
+# starting with an small data collections, I omit the loop, so only the first 500 comments will be added
 
     for submission in data:
         collectSubData(submission)
         subCount+=1
-    # Calls getPushshiftData() with the created date of the las submission
+
+    # Calls getPushshiftDataSubmission() with the created date of the las submission
+
     print(len(data))
     print(str(datetime.datetime.fromtimestamp(data[-1]['created_utc'])))
     after = data[-1]['created_utc']
