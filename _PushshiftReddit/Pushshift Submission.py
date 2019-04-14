@@ -32,7 +32,7 @@ def collectSubData(subm):
     except KeyError:
         description = "NaN"
 
-    created = datetime.datetime.fromtimestamp(subm['created_utc']) # MGTOW = 1307205635 - 06/04/2011
+    created = datetime.datetime.fromtimestamp(subm['created_utc']) # reddit creation = 1119484800 06/23/2005
 
     subData.append((sub_id, title, author, score, numComms, over_18, selftext, description, created))
     subStats[sub_id] = subData
