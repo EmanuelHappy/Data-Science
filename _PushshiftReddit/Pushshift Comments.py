@@ -22,7 +22,7 @@ def collectComData(com):
     com_id = com['id']
     score = com['score']
     parent_id = com['parent_id']
-    created = datetime.datetime.fromtimestamp(com['created_utc']) # MGTOW = 1307205635 - 06/04/2011
+    created = datetime.datetime.fromtimestamp(com['created_utc']) # Mreddit creation = 1119484800 06/23/2005
 
     comData.append((com_id, body, author, score, parent_id, created))
     comStats[com_id] = comData
