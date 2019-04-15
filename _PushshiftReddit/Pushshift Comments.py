@@ -29,7 +29,7 @@ def collectComData(com):
 
 '''Build Function that write the csv'''
 
-def updateSubs_and_Coments_file(sub):
+def update_Comments_file(sub):
     upload_com_count = 0
     file = "Comments-Data/{}_Comments.csv".format(sub)
     with open(file, 'w', newline='', encoding='utf-8') as file:
@@ -89,4 +89,4 @@ for sub in Subreddits:
 
     '''Upload to CSV file'''
 
-    updateSubs_and_Coments_file(sub)
+    update_Comments_file(sub)
