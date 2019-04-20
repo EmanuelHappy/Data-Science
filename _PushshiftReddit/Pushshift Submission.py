@@ -56,7 +56,7 @@ def collect_subm_data(subm):
     subm_stats[sub_id] = subm_data
 
 
-def updateSubs__file(sub):
+def update_subs__file(sub):
     """
     Function that write the csv
 
@@ -113,4 +113,4 @@ if __name__ == '__main__':
             after = data_subm[-1]['created_utc']
             data_subm = get_pushshift_data_submissions(query, after, before, sub)
 
-            updateSubs__file(sub)  # Upload to CSV file.
+            update_subs__file(sub)  # Upload to CSV file.
