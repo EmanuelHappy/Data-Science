@@ -1,6 +1,6 @@
 
-.ipynb_checkpoints
-.idea
 create_list_of_subbredits.py
+.ipynb_checkpoints/
+.idea/
 !/subreddits.csv
 .idea/workspace.xml
