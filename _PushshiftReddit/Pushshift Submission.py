@@ -56,6 +56,7 @@ def collect_subm_data(subm):
     subm_stats[sub_id] = subm_data
 
 
+
 def update_subs__file(sub):
     """
     Function that write the csv

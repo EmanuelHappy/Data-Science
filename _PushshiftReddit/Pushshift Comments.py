@@ -40,6 +40,7 @@ def collect_com_data(com):
     com_id = com['id']
     score = com['score']
     parent_id = com['parent_id']
+
     created = datetime.datetime.fromtimestamp(com['created_utc'])  # reddit = 1119484800 - 06/23/2005
 
     com_data.append((com_id, body, author, score, parent_id, created))
@@ -53,6 +54,7 @@ def update_comments_file(sub):
     :param sub: subreddit that will be extracted.
     :return: Nothing.
     """
+
     upload_com_count = 0
     file = f"Comments-Data/{sub}_Comments.csv"
 
