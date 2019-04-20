@@ -1,4 +1,4 @@
-.ipynb_checkpoints
+.ipynb_checkpoints/*
 create_list_of_subbredits.py
 
 !/subreddits.csv
