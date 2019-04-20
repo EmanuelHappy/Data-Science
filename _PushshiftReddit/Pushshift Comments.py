@@ -2,91 +2,104 @@ import requests
 import json
 import csv
 import datetime
+import time
+import pandas as pd
 
-'''Build Function that builds PushShift URLs'''
 
-def getPushshiftDataComents(query, after, before, sub):
+def get_pushshift_data_comments(query, after, before, sub):
+    """
+    Function that builds PushShift URLs.
+
+    :param query: Keyword that the API will search, as it is an empty string, all the comments will be collected.
+    :param after: Date that the API will start the search.
+    :param before: Date that the API will end the search.
+    :param sub: Subreddit where the API will search the comments.
+    :return: List of dictionaries containing each element of the JSON result.
+    """
     url = 'https://api.pushshift.io/reddit/search/comment/?title='+str(query)+'&size=500&after='+str(after)+'' \
         '&before='+str(before)+'&subreddit='+str(sub)
-    print(url)
+
+    print(url)  # print used to verify if the url during the process.
+
     r = requests.get(url)
     data = json.loads(r.text)
+
     return data['data']
 
-'''Build Function to extract key data points'''
 
-def collectComData(com):
-    comData = list()
+def collect_com_data(com):
+    """
+    Function to extract key data points.
+
+    :param com: Dictionary from the JSON result containing the content of one comment.
+    :return: Nothing
+    """
+    com_data = list()  # list to store data points
     body = com['body'].replace(';', '')
     author = com['author']
     com_id = com['id']
     score = com['score']
     parent_id = com['parent_id']
-    created = datetime.datetime.fromtimestamp(com['created_utc']) # MGTOW = 1307205635 - 06/04/2011
+    created = datetime.datetime.fromtimestamp(com['created_utc'])  # reddit = 1119484800 - 06/23/2005
 
-    comData.append((com_id, body, author, score, parent_id, created))
-    comStats[com_id] = comData
+    com_data.append((com_id, body, author, score, parent_id, created))
+    com_stats[com_id] = com_data
 
-'''Build Function that write the csv'''
 
-def updateSubs_and_Coments_file(sub):
+def update_comments_file(sub):
+    """
+    Function that write the csv
+
+    :param sub: subreddit that will be extracted.
+    :return: Nothing.
+    """
     upload_com_count = 0
-    file = "Comments-Data/{}_Comments.csv".format(sub)
+    file = f"Comments-Data/{sub}_Comments.csv"
+
     with open(file, 'w', newline='', encoding='utf-8') as file:
         a = csv.writer(file)
         headers = ["ID", "Comment", "Author", "Score", "Parent id", "Publish Date"]
         a.writerow(headers)
 
-        for com in comStats:
-            a.writerow(comStats[com][0])
+        for com in com_stats:
+            a.writerow(com_stats[com][0])
             upload_com_count += 1
 
-        print(str(upload_com_count) + " comments have been uploaded")
-
-'''Storing data'''
-
-#List of subreddits:
-Subreddits = ['MGTOW', 'exredpill', 'RedPillParenting', 'redpillbooks', 'TheRedPill', 'RedPillWomen', 'asktrp',
-              'thankTRP', 'becomeaman', 'GEOTRP', 'TRPOffTopic', 'Braincels', 'askanincel', 'BlackPillScience',
-              'IncelsWithoutHate', 'ForeverAlone', 'MensRightsLaw', 'MRActivism', 'FeMRA', 'LadyMRAs', 'Masculism',
-              'MensRants', 'MRRef', 'FeMRADebates', 'againstmensrights', 'TheBluePill']
+        print(str(upload_com_count) + " comments have been uploaded")  # feedback during the process.
 
 
-'''Run code and loop until all comments are collected'''
+if __name__ == '__main__':
 
-for sub in Subreddits:
-    # before and after dates
-    before = '1555257518'  # 04/14/2019
-    after = '1119484800'  # 06/23/2005 reddit creation
-    query = ''  # store all submissions and comments
-    comCount = 0
-    comStats = {}
+    # Run code and loop until all comments are collected from all subreddits
 
-    data_com = getPushshiftDataComents(query, after, before, sub)
+    # List of subreddits:
+    df = pd.read_csv('subreddits.csv')
+    subreddits = df.values.tolist()
 
-# Will run until all posts have been gathered
-# from the 'after' date up untill before date
+    for sub in subreddits:
+        sub = str(sub)[5:-5]
 
-#while len(data_com) > 0:
-#starting with an small data collections, I ommit the loop, so only the first 500 comments will be added
+        before = int(time.time())  # current date
+        after = '1119484800'  # 06/23/2005 reddit creation
+        query = ''  # look for all comments
+        com_count = 0
+        com_stats = {}
 
-    for coms in data_com:
-        collectComData(coms)
-        comCount+=1
+        data_com = get_pushshift_data_comments(query, after, before, sub)
 
-    # Calls getPushshiftDataComs() with the created date of the las comment
+        # Will run until all posts have been gathered
 
-    print(len(data_com))
-    print(str(datetime.datetime.fromtimestamp(data_com[-1]['created_utc'])))
-    after = data_com[-1]['created_utc']
-    data_com = getPushshiftDataComents(query, after, before, sub)
+        while len(data_com) > 0:
 
-    print(len(data_com))
+            for coms in data_com:
+                collect_com_data(coms)
+                com_count += 1
 
-    '''Check Comments'''
+            # Calls get_pushshift_data_comments() with the created date of the last comment.
 
-    print(str(len(comStats)) + " Comments have added to list")
+            print(str(datetime.datetime.fromtimestamp(data_com[-1]['created_utc'])))  # Date of the last comment.
 
-    '''Upload to CSV file'''
+            after = data_com[-1]['created_utc']
+            data_com = get_pushshift_data_comments(query, after, before, sub)
 
-    updateSubs_and_Coments_file(sub)
+            update_comments_file(sub)  # Upload to CSV file.

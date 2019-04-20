@@ -2,26 +2,44 @@ import requests
 import json
 import csv
 import datetime
+import time
+import pandas as pd
 
-'''Build Function that builds PushShift URLs'''
 
-def getPushshiftDataSubmissions(query, after, before, sub):
+def get_pushshift_data_submissions(query, after, before, sub):
+    """
+    Function that builds PushShift URLs.
+
+    :param query: Keyword that the API will search, as it is an empty string, all the submissions will be collected.
+    :param after: Date that the API will start the search.
+    :param before: Date that the API will end the search.
+    :param sub: Subreddit where the API will search the submissions.
+    :return: List of dictionaries containing each element of the JSON result.
+    """
     url = 'https://api.pushshift.io/reddit/search/submission/?title='+str(query)+'&size=500&after='+str(after)+'' \
         '&before='+str(before)+'&subreddit='+str(sub)
-    print(url)
+
+    print(url)  # print used to verify if the url during the process.
+
     r = requests.get(url)
     data = json.loads(r.text)
     return data['data']
 
-'''Build Function to extract key data points'''
 
-def collectSubData(subm):
-    subData = list() #list to store data points
+def collect_subm_data(subm):
+    """
+    Function to extract key data points.
+
+    :param subm: Dictionary from the JSON result containing the content of one submission.
+    :return: Nothing
+    """
+
+    subm_data = list()  # list to store data points
     title = subm['title'].replace(';', '')
     author = subm['author']
     sub_id = subm['id']
     score = subm['score']
-    numComms = subm['num_comments']
+    num_coms = subm['num_comments']
     over_18 = subm['over_18']
     try:
         selftext = subm['selftext'].replace(';', '')
@@ -32,71 +50,67 @@ def collectSubData(subm):
     except KeyError:
         description = "NaN"
 
-    created = datetime.datetime.fromtimestamp(subm['created_utc']) # MGTOW = 1307205635 - 06/04/2011
+    created = datetime.datetime.fromtimestamp(subm['created_utc'])  # reddit = 1119484800 - 06/23/2005
 
-    subData.append((sub_id, title, author, score, numComms, over_18, selftext, description, created))
-    subStats[sub_id] = subData
+    subm_data.append((sub_id, title, author, score, num_coms, over_18, selftext, description, created))
+    subm_stats[sub_id] = subm_data
 
-'''Build Function that write the csv'''
 
 def updateSubs__file(sub):
+    """
+    Function that write the csv
+
+    :param sub: subreddit that will be extracted.
+    :return: Nothing
+    """
     upload_subm_count = 0
     file = f"Submissions-Data/{sub}_Submissions.csv"
 
     with open(file, 'w', newline='', encoding='utf-8') as file:
         a = csv.writer(file)
-        headers = ["Post ID", "Title", "Author", "Score", "No. of Comments", "Over 18", "Selftext", "Description", "Publish Date"]
+        headers = ["Post ID", "Title", "Author", "Score", "No. of Comments", "Over 18", "Selftext", "Description",
+                   "Publish Date"]
         a.writerow(headers)
 
-        for sub in subStats:
-            a.writerow(subStats[sub][0])
-            upload_subm_count+=1
+        for subm in subm_stats:
+            a.writerow(subm_stats[subm][0])
+            upload_subm_count += 1
 
-        print(str(upload_subm_count) + f" submissions have been uploaded at {sub}.csv")
-
-'''Storing data'''
-
-#List of subreddits:
-Subreddits = ['MGTOW', 'exredpill', 'RedPillParenting', 'redpillbooks', 'TheRedPill', 'RedPillWomen', 'asktrp',
-              'thankTRP', 'becomeaman', 'GEOTRP', 'TRPOffTopic', 'Braincels', 'askanincel', 'BlackPillScience',
-              'IncelsWithoutHate', 'ForeverAlone', 'MensRightsLaw', 'MRActivism', 'FeMRA', 'LadyMRAs', 'Masculism',
-              'MensRants', 'MRRef', 'FeMRADebates', 'againstmensrights', 'TheBluePill']
+        print(str(upload_subm_count) + f" submissions have been uploaded at {sub}.csv")  # feedback during the process.
 
 
-'''Run code and loop until all submissions are collected'''
+if __name__ == '__main__':
 
-for sub in Subreddits:
-    # before and after dates
-    before = '1555257518'  # 04/14/2019
-    after = '1119484800'  # 06/23/2005 reddit creation
-    query = ''  # store all submissions and comments
-    subCount = 0
-    subStats = {}
+    # Run code and loop until all submissions are collected from all subreddits
 
-    data = getPushshiftDataSubmissions(query, after, before, sub)
+    # List of subreddits:
+    df = pd.read_csv('subreddits.csv')
+    subreddits = df.values.tolist()
 
-# Will run until all posts have been gathered
-# from the 'after' date up untill before date
+    for sub in subreddits:
+        sub = str(sub)[5:-5]
 
-# while len(data_com) > 0::
-# starting with an small data collections, I omit the loop, so only the first 500 comments will be added
+        before = int(time.time())  # current date
+        after = '1119484800'  # 06/23/2005 reddit creation
+        query = ''  # look for all submissions
+        subm_count = 0
+        subm_stats = {}
 
-    for submission in data:
-        collectSubData(submission)
-        subCount+=1
+        data_subm = get_pushshift_data_submissions(query, after, before, sub)
 
-    # Calls getPushshiftDataSubmission() with the created date of the las submission
+        # Will run until all posts have been gathered
 
-    print(len(data))
-    print(str(datetime.datetime.fromtimestamp(data[-1]['created_utc'])))
-    after = data[-1]['created_utc']
-    data = getPushshiftDataSubmissions(query, after, before, sub)
+        while len(data_subm) > 0:
 
-    '''Check submissions'''
+            for submission in data_subm:
+                collect_subm_data(submission)
+                subm_count += 1
 
-    print(str(len(subStats)) + " submissions have added to list")
+            # Calls getPushshiftDataSubmission() with the created date of the las submission.
 
-    '''Upload to CSV file'''
+            print(str(datetime.datetime.fromtimestamp(data_subm[-1]['created_utc'])))  # Date of the last comment.
 
+            after = data_subm[-1]['created_utc']
+            data_subm = get_pushshift_data_submissions(query, after, before, sub)
 
-    updateSubs__file(sub)
+            updateSubs__file(sub)  # Upload to CSV file.
