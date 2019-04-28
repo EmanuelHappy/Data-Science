@@ -6,3 +6,6 @@ create_list_of_subbredits.py
 .idea/
 !/subreddits.csv
 .idea/workspace.xml
+**/*.png
+*.png
+
