@@ -18,6 +18,9 @@ parser.add_argument("--src", dest="src", type=str, default="./data/reddit/subred
 parser.add_argument("--dst", dest="dst", type=str, default="./data/reddit/cm/",
                     help="Where to save the output files.")
 
+parser.add_argument("--nsub", dest="nsub", type=int, default=0,
+                     help="Sub that will start the collect")
+
 args = parser.parse_args()
 
 def get_pushshift_data_comments(query, after, before, sub):
@@ -91,7 +94,7 @@ if __name__ == '__main__':
     df = pd.read_csv(args.src)
     subreddits = df.values.tolist()
 
-    for sub in subreddits:
+    for sub in subreddits[args.nsub:]:
         sub = str(sub)[5:-5]
 
         before = int(time.time())  # current date
