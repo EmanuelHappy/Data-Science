@@ -21,6 +21,9 @@ parser.add_argument("--dst", dest="dst", type=str, default="./data/reddit/cm/",
 parser.add_argument("--nsub", dest="nsub", type=int, default=0,
                      help="Sub that will start the collect")
 
+parser.add_argument("--date", dest="date", type=int, default=1119484800,
+                      help="Date for the collection of the first sub")
+
 args = parser.parse_args()
 
 def get_pushshift_data_comments(query, after, before, sub):
@@ -98,7 +101,12 @@ if __name__ == '__main__':
         sub = str(sub)[5:-5]
 
         before = int(time.time())  # current date
-        after = '1119484800'  # 06/23/2005 reddit creation
+  
+        if sub == subreddits[args.nsub:]:
+            after = args.data
+        else:
+            after = '1119484800'  # 06/23/2005 reddit creation
+          
         query = ''  # look for all comments
         com_count = 0
         com_stats = {}
