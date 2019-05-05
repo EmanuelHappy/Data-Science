@@ -102,7 +102,7 @@ if __name__ == '__main__':
 
         before = int(time.time())  # current date
   
-        if sub == subreddits[args.nsub:]:
+        if sub == subreddits[args.nsub]:
             after = args.data
         else:
             after = '1119484800'  # 06/23/2005 reddit creation
