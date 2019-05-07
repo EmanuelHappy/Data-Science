@@ -34,7 +34,7 @@ def add_columns(dataframe, sub, emotion_list):
     sentiment = []
     subjectivity = []
 
-  """  for comment in dataframe['Comment']:
+    """  for comment in dataframe['Comment']:
         try:
             sentiment.append(TextBlob(comment).sentiment[0])
             subjectivity.append(TextBlob(comment).sentiment[1])
