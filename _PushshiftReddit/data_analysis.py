@@ -183,7 +183,7 @@ if __name__ == '__main__':
     for s in subreddits:
         sub = str(s)[5:-5]
 
-        temp_df = pd.read_csv(f'{args.src}{sub}_Comments.csv')
+        temp_df = pd.read_csv(f'{args.src}{sub}_comments.csv')
         add_columns(temp_df, sub, emotion_list)
 
         reddit_activity(temp_df, sub)
