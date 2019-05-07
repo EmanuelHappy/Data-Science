@@ -27,8 +27,8 @@ def add_columns(dataframe, sub, emotion_list):
 
     date = dataframe['Publish Date']
     dataframe['num'] = 1
-    dataframe['year'] = [str(item)[:4] for item in date]
-    dataframe['month'] = [str(item)[:7] for item in date]
+    dataframe['year'] = [item[:4] for item in date]
+    dataframe['month'] = [item[:7] for item in date]
     dataframe['subreddit'] = sub
 
     sentiment = []
@@ -183,7 +183,7 @@ if __name__ == '__main__':
     for s in subreddits:
         sub = str(s)[5:-5]
 
-        temp_df = pd.read_csv(f'{args.src}{sub}_comments.csv')
+        temp_df = pd.read_csv(f'{args.src}{sub}_comments.csv', dtype={'Publish Date': object})
         add_columns(temp_df, sub, emotion_list)
 
         reddit_activity(temp_df, sub)
