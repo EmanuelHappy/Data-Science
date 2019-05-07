@@ -27,14 +27,14 @@ def add_columns(dataframe, sub, emotion_list):
 
     date = dataframe['Publish Date']
     dataframe['num'] = 1
-    dataframe['year'] = [item[:4] for item in date]
-    dataframe['month'] = [item[:7] for item in date]
+    dataframe['year'] = [str(item)[:4] for item in date]
+    dataframe['month'] = [str(item)[:7] for item in date]
     dataframe['subreddit'] = sub
 
     sentiment = []
     subjectivity = []
 
-    """for comment in dataframe['Comment']:
+    for comment in dataframe['Comment']:
         try:
             sentiment.append(TextBlob(comment).sentiment[0])
             subjectivity.append(TextBlob(comment).sentiment[1])
@@ -54,7 +54,7 @@ def add_columns(dataframe, sub, emotion_list):
             except:
                 emotions.append(0)
 
-        dataframe[emotion] = emotions"""
+        dataframe[emotion] = emotions
 
     print(f'columns added at {sub}')
 
@@ -183,14 +183,14 @@ if __name__ == '__main__':
     for s in subreddits:
         sub = str(s)[5:-5]
 
-        temp_df = pd.read_csv(f'{args.src}{sub}_comments.csv', dtype={'Publish Date': object})
+        temp_df = pd.read_csv(f'{args.src}{sub}_comments.csv')
         add_columns(temp_df, sub, emotion_list)
 
         reddit_activity(temp_df, sub)
 
-        #sentimental_analysis(temp_df, sub)
+        sentimental_analysis(temp_df, sub)
 
-        #analyse_some_emotions(temp_df, sub, emotion_list)
+        analyse_some_emotions(temp_df, sub, emotion_list)
 
         if s == subreddits[0]:
             df = temp_df
@@ -198,7 +198,8 @@ if __name__ == '__main__':
             df = df.append(temp_df, ignore_index=True)
 
     reddit_activity(df, 'all_subs')
-    #sentimental_analysis(df, 'all_subs')
-    #analyse_some_emotions(df, 'all_subs', emotion_list)
-    #most_common_words(df)
-    #comments_by_sub(df)
+    sentimental_analysis(df, 'all_subs')
+    analyse_some_emotions(df, 'all_subs', emotion_list)
+    most_common_words(df)
+    comments_by_sub(df)
+    empath_rank(df)
