@@ -176,7 +176,7 @@ def comments_by_sub(dataframe):
     return subs
 
 if __name__ == '__main__':
-    sdf = pd.read_csv('subreddits.csv')
+    sdf = pd.read_csv('subreddits-Bra-ask.csv')
     subreddits = sdf.values.tolist()
     emotion_list = ['negative_emotion', 'hate', 'violence', 'death']
 
