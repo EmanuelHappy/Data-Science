@@ -24,6 +24,9 @@ parser.add_argument("--nsub", dest="nsub", type=int, default=0,
 parser.add_argument("--date", dest="date", type=int, default=1119484800,
                       help="Date for the collection of the first sub")
 
+parser.add_argument("--just", dest="just", type=bool, default=False, 
+                      help="If you want to collect from just one reddit")
+
 args = parser.parse_args()
 
 def get_pushshift_data_comments(query, after, before, sub):
@@ -129,3 +132,6 @@ if __name__ == '__main__':
             data_com = get_pushshift_data_comments(query, after, before, sub)
 
             update_comments_file(sub)  # Upload to CSV file.
+           
+        if args.just:
+            break
