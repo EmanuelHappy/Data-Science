@@ -27,8 +27,8 @@ def add_columns(dataframe, sub, emotion_list):
 
     date = dataframe['Publish Date']
     dataframe['num'] = 1
-    dataframe['year'] = [str(item)[:4] for item in date]
-    dataframe['month'] = [str(item)[:7] for item in date]
+    dataframe['year'] = [item[:4] for item in date]
+    dataframe['month'] = [item[:7] for item in date]
     dataframe['subreddit'] = sub
 
     sentiment = []
@@ -53,7 +53,6 @@ def add_columns(dataframe, sub, emotion_list):
                 emotions.append(lexicon.analyze(str(comment))[emotion])
             except:
                 emotions.append(0)
-
         dataframe[emotion] = emotions'''
 
     print(f'columns added at {sub}')
@@ -97,18 +96,18 @@ def reddit_activity(dataframe, sub):
     plt.show()
 
 
-def sentimental_analysis(dataframe, sub):
+def sentimental_analysis(data_sa, sub):
     sentiment = []
     subjectivity = []
 
-    for comment in dataframe['Comment']:
+    for comment in data_sa['Comment']:
         sentiment.append(TextBlob(str(comment)).sentiment[0])
         subjectivity.append(TextBlob(str(comment)).sentiment[1])
 
-    dataframe['polarity'] = sentiment
-    dataframe['subjectivity'] = subjectivity
-    polarity_serie = dataframe.groupby('month')['polarity'].mean()
-    subjectivity_serie = dataframe.groupby('month')['subjectivity'].mean()
+    data_sa['polarity'] = sentiment
+    data_sa['subjectivity'] = subjectivity
+    polarity_serie = data_sa.groupby('month')['polarity'].mean()
+    subjectivity_serie = data_sa.groupby('month')['subjectivity'].mean()
 
     polarity_serie.plot()
     plt.legend(frameon=False)
@@ -202,4 +201,3 @@ if __name__ == '__main__':
     #analyse_some_emotions(df, 'all_subs', emotion_list)
     #most_common_words(df)
     #comments_by_sub(df)
-    #empath_rank(df)
