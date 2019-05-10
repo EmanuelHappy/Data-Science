@@ -37,14 +37,14 @@ def add_columns(dataframe, sub, emotion_list):
     for comment in dataframe['Comment']:
         try:
             sentiment.append(TextBlob(comment).sentiment[0])
-            subjectivity.append(TextBlob(comment).sentiment[1])
+            #subjectivity.append(TextBlob(comment).sentiment[1])
 
         except:
             sentiment.append(0)
-            subjectivity.append(0)
+            #subjectivity.append(0)
 
     dataframe['polarity'] = sentiment
-    dataframe['subjectivity'] = subjectivity
+    #dataframe['subjectivity'] = subjectivity
     
     '''for emotion in emotion_list:
         emotions = []
@@ -106,11 +106,11 @@ def sentimental_analysis(dataframe, sub):
     plt.savefig(f'{args.dst}{sub}_polarity.png')
     plt.show()
 
-    subjectivity_serie.plot()
-    plt.legend(frameon=False)
-    plt.title(f'{sub} subjectivity')
-    plt.savefig(f'{args.dst}{sub}_subjectivity.png')
-    plt.show()
+    #subjectivity_serie.plot()
+    #plt.legend(frameon=False)
+    #plt.title(f'{sub} subjectivity')
+    #plt.savefig(f'{args.dst}{sub}_subjectivity.png')
+    #plt.show()
 
 
 def empath_rank(dataframe):
@@ -176,7 +176,7 @@ if __name__ == '__main__':
         temp_df = pd.read_csv(f'{args.src}{sub}_comments.csv')
         add_columns(temp_df, sub, emotion_list)
 
-        reddit_activity(temp_df, sub)
+        #reddit_activity(temp_df, sub)
 
         sentimental_analysis(temp_df, sub)
 
@@ -187,7 +187,7 @@ if __name__ == '__main__':
         else:
             df = df.append(temp_df, ignore_index=True)
 
-    reddit_activity(df, 'all_subs')
+    #reddit_activity(df, 'all_subs')
     sentimental_analysis(df, 'all_subs')
     #analyse_some_emotions(df, 'all_subs', emotion_list)
     #most_common_words(df)
