@@ -37,14 +37,14 @@ def add_columns(dataframe, sub, emotion_list):
     for comment in dataframe['Comment']:
         try:
             sentiment.append(TextBlob(comment).sentiment[0])
-            #subjectivity.append(TextBlob(comment).sentiment[1])
+            subjectivity.append(TextBlob(comment).sentiment[1])
 
         except:
             sentiment.append(0)
-            #subjectivity.append(0)
+            subjectivity.append(0)
 
     dataframe['polarity'] = sentiment
-    #dataframe['subjectivity'] = subjectivity
+    dataframe['subjectivity'] = subjectivity
     
     '''for emotion in emotion_list:
         emotions = []
@@ -104,13 +104,13 @@ def sentimental_analysis(dataframe, sub):
     plt.legend(frameon=False)
     plt.title(f'{sub} polarity')
     plt.savefig(f'{args.dst}{sub}_polarity.png')
-    plt.show()
+    plt.close()
 
-    #subjectivity_serie.plot()
-    #plt.legend(frameon=False)
-    #plt.title(f'{sub} subjectivity')
-    #plt.savefig(f'{args.dst}{sub}_subjectivity.png')
-    #plt.show()
+    subjectivity_serie.plot()
+    plt.legend(frameon=False)
+    plt.title(f'{sub} subjectivity')
+    plt.savefig(f'{args.dst}{sub}_subjectivity.png')
+    plt.close()
 
 
 def empath_rank(dataframe):
