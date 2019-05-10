@@ -25,7 +25,7 @@ args = parser.parse_args()
 
 def add_columns(dataframe, sub, emotion_list):
 
-     date = dataframe['Publish Date']
+    date = dataframe['Publish Date']
     dataframe['num'] = 1
     dataframe['year'] = [item[:4] for item in date]
     dataframe['month'] = [item[:7] for item in date]
