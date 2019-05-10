@@ -25,7 +25,7 @@ args = parser.parse_args()
 
 def add_columns(dataframe, sub, emotion_list):
 
-    date = dataframe['Publish Date']
+     date = dataframe['Publish Date']
     dataframe['num'] = 1
     dataframe['year'] = [item[:4] for item in date]
     dataframe['month'] = [item[:7] for item in date]
@@ -45,7 +45,7 @@ def add_columns(dataframe, sub, emotion_list):
 
     dataframe['polarity'] = sentiment
     dataframe['subjectivity'] = subjectivity
-
+    
     '''for emotion in emotion_list:
         emotions = []
         for comment in dataframe['Comment']:
@@ -96,18 +96,9 @@ def reddit_activity(dataframe, sub):
     plt.show()
 
 
-def sentimental_analysis(data_sa, sub):
-    sentiment = []
-    subjectivity = []
-
-    for comment in data_sa['Comment']:
-        sentiment.append(TextBlob(str(comment)).sentiment[0])
-        subjectivity.append(TextBlob(str(comment)).sentiment[1])
-
-    data_sa['polarity'] = sentiment
-    data_sa['subjectivity'] = subjectivity
-    polarity_serie = data_sa.groupby('month')['polarity'].mean()
-    subjectivity_serie = data_sa.groupby('month')['subjectivity'].mean()
+def sentimental_analysis(dataframe, sub):
+    polarity_serie = dataframe.groupby('month')['polarity'].mean()
+    subjectivity_serie = dataframe.groupby('month')['subjectivity'].mean()
 
     polarity_serie.plot()
     plt.legend(frameon=False)
