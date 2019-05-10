@@ -92,7 +92,7 @@ def reddit_activity(dataframe, sub):
     comments_per_month.pivot_table(index='month').plot()
     plt.legend(frameon=False)
     plt.title(f'{sub} activity')
-    plt.savefig(f'{sub}_activity.png')
+    plt.savefig(f'{args.dst}{sub}_activity.png')
     plt.show()
 
 
@@ -103,13 +103,13 @@ def sentimental_analysis(dataframe, sub):
     polarity_serie.plot()
     plt.legend(frameon=False)
     plt.title(f'{sub} polarity')
-    plt.savefig(f'{sub}_polarity.png')
+    plt.savefig(f'{args.dst}{sub}_polarity.png')
     plt.show()
 
     subjectivity_serie.plot()
     plt.legend(frameon=False)
     plt.title(f'{sub} subjectivity')
-    plt.savefig(f'{sub}_subjectivity.png')
+    plt.savefig(f'{args.dst}{sub}_subjectivity.png')
     plt.show()
 
 
@@ -138,14 +138,14 @@ def analyse_some_emotions(dataframe, sub, emotion_list):
 
         plt.plot(serie, ('-'))
         plt.title(f'{sub} {emotion}')
-        plt.savefig(f'{sub}_{emotion}_line.png')
+        plt.savefig(f'{args.dst}{sub}_{emotion}_line.png')
         plt.show()
 
         a = sns.catplot(x="month", y=emotion, data=dataframe,
                         height=6, kind="bar", color="c", errwidth=0)
         plt.title(f'{sub} {emotion}')
         plt.show()
-        a.savefig(f'{sub}_{emotion}_bar.png')
+        a.savefig(f'{args.dst}{sub}_{emotion}_bar.png')
 
         series.append(serie)
 
@@ -156,7 +156,7 @@ def analyse_some_emotions(dataframe, sub, emotion_list):
     g = sns.catplot(x="year", y="Values", hue='cols', kind='bar', data=emotions, height=9, palette='plasma')
     plt.title(f'{sub} emotions by year')
     plt.show()
-    g.savefig(f"{sub}_emotions_by_year.png")
+    g.savefig(f"{args.dst}{sub}_emotions_by_year.png")
 
 def comments_by_sub(dataframe):
     subs = dataframe.groupby('subreddit')['num'].sum()
@@ -176,7 +176,7 @@ if __name__ == '__main__':
         temp_df = pd.read_csv(f'{args.src}{sub}_comments.csv')
         add_columns(temp_df, sub, emotion_list)
 
-        #reddit_activity(temp_df, sub)
+        reddit_activity(temp_df, sub)
 
         sentimental_analysis(temp_df, sub)
 
@@ -187,7 +187,7 @@ if __name__ == '__main__':
         else:
             df = df.append(temp_df, ignore_index=True)
 
-    #reddit_activity(df, 'all_subs')
+    reddit_activity(df, 'all_subs')
     sentimental_analysis(df, 'all_subs')
     #analyse_some_emotions(df, 'all_subs', emotion_list)
     #most_common_words(df)
