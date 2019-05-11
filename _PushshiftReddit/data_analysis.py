@@ -46,14 +46,19 @@ def add_columns(dataframe, sub, emotion_list):
     dataframe['polarity'] = sentiment
     dataframe['subjectivity'] = subjectivity'''
     
+    d = {}
     for emotion in emotion_list:
-        emotions = []
-        for comment in dataframe['Comment']:
-            try:
-                emotions.append(lexicon.analyze(str(comment))[emotion])
-            except:
-                emotions.append(0)
-        dataframe[emotion] = emotions
+        d[emotion] = []
+
+    for comment in dataframe['Comment']:
+        try:
+            a = lexicon.analyze(str(comment))
+            [d[emotion].append(a[emotion]) for emotion in emotion_list]
+        except:
+            [d[emotion].append(0) for emotion in emotion_list]
+
+    for emotion in emotion_list:
+        dataframe[emotion] = d[emotion]
 
     print(f'columns added at {sub}')
 
