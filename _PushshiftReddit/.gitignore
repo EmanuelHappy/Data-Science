@@ -6,3 +6,5 @@ create_list_of_subbredits.py
 .idea/
 !/subreddits.csv
 .idea/workspace.xml
+!**/comments_by_sub.csv
+!**/most_common_word.csv

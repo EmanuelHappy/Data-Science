@@ -44,7 +44,7 @@ def add_columns(dataframe, sub, emotion_list):
             subjectivity.append(0)
 
     dataframe['polarity'] = sentiment
-    dataframe['subjectivity'] = subjectivity'''
+    dataframe['subjectivity'] = subjectivity
     
     d = {}
     for emotion in emotion_list:
@@ -58,7 +58,7 @@ def add_columns(dataframe, sub, emotion_list):
             [d[emotion].append(0) for emotion in emotion_list]
 
     for emotion in emotion_list:
-        dataframe[emotion] = d[emotion]
+        dataframe[emotion] = d[emotion]'''
 
     print(f'columns added at {sub}')
 
@@ -185,7 +185,7 @@ if __name__ == '__main__':
 
         #sentimental_analysis(temp_df, sub)
 
-        analyse_some_emotions(temp_df, sub, emotion_list)
+        #analyse_some_emotions(temp_df, sub, emotion_list)
 
         if s == subreddits[0]:
             df = temp_df
@@ -194,6 +194,6 @@ if __name__ == '__main__':
 
     #reddit_activity(df, 'all_subs')
     #sentimental_analysis(df, 'all_subs')
-    analyse_some_emotions(df, 'all_subs', emotion_list)
-    #most_common_words(df)
-    #comments_by_sub(df)
+    #analyse_some_emotions(df, 'all_subs', emotion_list)
+    most_common_words(df)
+    comments_by_sub(df)
