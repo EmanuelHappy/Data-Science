@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf version="1.2" xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema-instance">
+  <graph defaultedgetype="undirected" mode="static" name="">
+    <meta>
+      <creator>NetworkX 2.3</creator>
+      <lastmodified>20/05/2019</lastmodified>
+    </meta>
+    <nodes>
+      <node id="MGTOW" label="MGTOW" />
+      <node id="exredpill" label="exredpill" />
+      <node id="RedPillParenting" label="RedPillParenting" />
+      <node id="redpillbooks" label="redpillbooks" />
+      <node id="TheRedPill" label="TheRedPill" />
+      <node id="RedPillWomen" label="RedPillWomen" />
+      <node id="asktrp" label="asktrp" />
+      <node id="thankTRP" label="thankTRP" />
+      <node id="becomeaman" label="becomeaman" />
+      <node id="TRPOffTopic" label="TRPOffTopic" />
+      <node id="Braincels" label="Braincels" />
+      <node id="askanincel" label="askanincel" />
+      <node id="BlackPillScience" label="BlackPillScience" />
+      <node id="IncelsWithoutHate" label="IncelsWithoutHate" />
+      <node id="ForeverAlone" label="ForeverAlone" />
+      <node id="LadyMRAs" label="LadyMRAs" />
+      <node id="Masculism" label="Masculism" />
+      <node id="MensRants" label="MensRants" />
+      <node id="FeMRADebates" label="FeMRADebates" />
+      <node id="againstmensrights" label="againstmensrights" />
+      <node id="TheBluePill" label="TheBluePill" />
+    </nodes>
+    <edges>
+      <edge id="1" source="MGTOW" target="exredpill" weight="535.0" />
+      <edge id="3" source="MGTOW" target="redpillbooks" weight="157.0" />
+      <edge id="4" source="MGTOW" target="TheRedPill" weight="13446.0" />
+      <edge id="5" source="MGTOW" target="RedPillWomen" weight="2282.0" />
+      <edge id="6" source="MGTOW" target="asktrp" weight="6171.0" />
+      <edge id="7" source="MGTOW" target="thankTRP" weight="132.0" />
+      <edge id="8" source="MGTOW" target="becomeaman" weight="466.0" />
+      <edge id="10" source="MGTOW" target="TRPOffTopic" weight="163.0" />
+      <edge id="11" source="MGTOW" target="Braincels" weight="7156.0" />
+      <edge id="12" source="MGTOW" target="askanincel" weight="416.0" />
+      <edge id="13" source="MGTOW" target="BlackPillScience" weight="617.0" />
+      <edge id="14" source="MGTOW" target="IncelsWithoutHate" weight="1464.0" />
+      <edge id="15" source="MGTOW" target="ForeverAlone" weight="5280.0" />
+      <edge id="20" source="MGTOW" target="Masculism" weight="200.0" />
+      <edge id="21" source="MGTOW" target="MensRants" weight="347.0" />
+      <edge id="23" source="MGTOW" target="FeMRADebates" weight="443.0" />
+      <edge id="24" source="MGTOW" target="againstmensrights" weight="576.0" />
+      <edge id="25" source="MGTOW" target="TheBluePill" weight="3168.0" />
+      <edge id="29" source="exredpill" target="TheRedPill" weight="850.0" />
+      <edge id="30" source="exredpill" target="RedPillWomen" weight="317.0" />
+      <edge id="31" source="exredpill" target="asktrp" weight="595.0" />
+      <edge id="36" source="exredpill" target="Braincels" weight="227.0" />
+      <edge id="40" source="exredpill" target="ForeverAlone" weight="307.0" />
+      <edge id="49" source="exredpill" target="againstmensrights" weight="157.0" />
+      <edge id="50" source="exredpill" target="TheBluePill" weight="1084.0" />
+      <edge id="53" source="RedPillParenting" target="TheRedPill" weight="265.0" />
+      <edge id="55" source="RedPillParenting" target="asktrp" weight="173.0" />
+      <edge id="76" source="redpillbooks" target="TheRedPill" weight="557.0" />
+      <edge id="77" source="redpillbooks" target="RedPillWomen" weight="121.0" />
+      <edge id="78" source="redpillbooks" target="asktrp" weight="428.0" />
+      <edge id="80" source="redpillbooks" target="becomeaman" weight="128.0" />
+      <edge id="99" source="TheRedPill" target="RedPillWomen" weight="5627.0" />
+      <edge id="100" source="TheRedPill" target="asktrp" weight="26487.0" />
+      <edge id="101" source="TheRedPill" target="thankTRP" weight="550.0" />
+      <edge id="102" source="TheRedPill" target="becomeaman" weight="1810.0" />
+      <edge id="104" source="TheRedPill" target="TRPOffTopic" weight="523.0" />
+      <edge id="105" source="TheRedPill" target="Braincels" weight="3481.0" />
+      <edge id="106" source="TheRedPill" target="askanincel" weight="105.0" />
+      <edge id="107" source="TheRedPill" target="BlackPillScience" weight="347.0" />
+      <edge id="108" source="TheRedPill" target="IncelsWithoutHate" weight="501.0" />
+      <edge id="109" source="TheRedPill" target="ForeverAlone" weight="5384.0" />
+      <edge id="113" source="TheRedPill" target="LadyMRAs" weight="116.0" />
+      <edge id="114" source="TheRedPill" target="Masculism" weight="303.0" />
+      <edge id="115" source="TheRedPill" target="MensRants" weight="536.0" />
+      <edge id="117" source="TheRedPill" target="FeMRADebates" weight="679.0" />
+      <edge id="118" source="TheRedPill" target="againstmensrights" weight="881.0" />
+      <edge id="119" source="TheRedPill" target="TheBluePill" weight="5692.0" />
+      <edge id="121" source="RedPillWomen" target="asktrp" weight="3558.0" />
+      <edge id="122" source="RedPillWomen" target="thankTRP" weight="163.0" />
+      <edge id="123" source="RedPillWomen" target="becomeaman" weight="360.0" />
+      <edge id="125" source="RedPillWomen" target="TRPOffTopic" weight="154.0" />
+      <edge id="126" source="RedPillWomen" target="Braincels" weight="708.0" />
+      <edge id="129" source="RedPillWomen" target="IncelsWithoutHate" weight="208.0" />
+      <edge id="130" source="RedPillWomen" target="ForeverAlone" weight="895.0" />
+      <edge id="138" source="RedPillWomen" target="FeMRADebates" weight="227.0" />
+      <edge id="139" source="RedPillWomen" target="againstmensrights" weight="192.0" />
+      <edge id="140" source="RedPillWomen" target="TheBluePill" weight="1507.0" />
+      <edge id="142" source="asktrp" target="thankTRP" weight="484.0" />
+      <edge id="143" source="asktrp" target="becomeaman" weight="1197.0" />
+      <edge id="145" source="asktrp" target="TRPOffTopic" weight="432.0" />
+      <edge id="146" source="asktrp" target="Braincels" weight="1603.0" />
+      <edge id="148" source="asktrp" target="BlackPillScience" weight="235.0" />
+      <edge id="149" source="asktrp" target="IncelsWithoutHate" weight="347.0" />
+      <edge id="150" source="asktrp" target="ForeverAlone" weight="2099.0" />
+      <edge id="155" source="asktrp" target="Masculism" weight="103.0" />
+      <edge id="156" source="asktrp" target="MensRants" weight="174.0" />
+      <edge id="158" source="asktrp" target="FeMRADebates" weight="259.0" />
+      <edge id="159" source="asktrp" target="againstmensrights" weight="267.0" />
+      <edge id="160" source="asktrp" target="TheBluePill" weight="2627.0" />
+      <edge id="162" source="thankTRP" target="becomeaman" weight="131.0" />
+      <edge id="182" source="becomeaman" target="TRPOffTopic" weight="116.0" />
+      <edge id="187" source="becomeaman" target="ForeverAlone" weight="199.0" />
+      <edge id="197" source="becomeaman" target="TheBluePill" weight="217.0" />
+      <edge id="232" source="Braincels" target="askanincel" weight="770.0" />
+      <edge id="233" source="Braincels" target="BlackPillScience" weight="859.0" />
+      <edge id="234" source="Braincels" target="IncelsWithoutHate" weight="2791.0" />
+      <edge id="235" source="Braincels" target="ForeverAlone" weight="4854.0" />
+      <edge id="243" source="Braincels" target="FeMRADebates" weight="157.0" />
+      <edge id="244" source="Braincels" target="againstmensrights" weight="204.0" />
+      <edge id="245" source="Braincels" target="TheBluePill" weight="1623.0" />
+      <edge id="247" source="askanincel" target="BlackPillScience" weight="220.0" />
+      <edge id="248" source="askanincel" target="IncelsWithoutHate" weight="839.0" />
+      <edge id="249" source="askanincel" target="ForeverAlone" weight="516.0" />
+      <edge id="259" source="askanincel" target="TheBluePill" weight="135.0" />
+      <edge id="261" source="BlackPillScience" target="IncelsWithoutHate" weight="373.0" />
+      <edge id="262" source="BlackPillScience" target="ForeverAlone" weight="380.0" />
+      <edge id="272" source="BlackPillScience" target="TheBluePill" weight="130.0" />
+      <edge id="274" source="IncelsWithoutHate" target="ForeverAlone" weight="1813.0" />
+      <edge id="284" source="IncelsWithoutHate" target="TheBluePill" weight="484.0" />
+      <edge id="290" source="ForeverAlone" target="Masculism" weight="175.0" />
+      <edge id="291" source="ForeverAlone" target="MensRants" weight="216.0" />
+      <edge id="293" source="ForeverAlone" target="FeMRADebates" weight="358.0" />
+      <edge id="294" source="ForeverAlone" target="againstmensrights" weight="608.0" />
+      <edge id="295" source="ForeverAlone" target="TheBluePill" weight="2672.0" />
+      <edge id="324" source="LadyMRAs" target="Masculism" weight="110.0" />
+      <edge id="328" source="LadyMRAs" target="againstmensrights" weight="109.0" />
+      <edge id="331" source="Masculism" target="MensRants" weight="113.0" />
+      <edge id="333" source="Masculism" target="FeMRADebates" weight="193.0" />
+      <edge id="334" source="Masculism" target="againstmensrights" weight="181.0" />
+      <edge id="335" source="Masculism" target="TheBluePill" weight="143.0" />
+      <edge id="338" source="MensRants" target="FeMRADebates" weight="204.0" />
+      <edge id="339" source="MensRants" target="againstmensrights" weight="214.0" />
+      <edge id="340" source="MensRants" target="TheBluePill" weight="203.0" />
+      <edge id="346" source="FeMRADebates" target="againstmensrights" weight="602.0" />
+      <edge id="347" source="FeMRADebates" target="TheBluePill" weight="629.0" />
+      <edge id="349" source="againstmensrights" target="TheBluePill" weight="2318.0" />
+    </edges>
+  </graph>
+</gexf>
