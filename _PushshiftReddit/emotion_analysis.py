@@ -77,7 +77,7 @@ def analyse_some_emotions(dataframe, sub, emotion_list):
 
     plt.rc('xtick', labelsize=20)
     plt.rc('ytick', labelsize=30)
-    plt.savefig(f'{sub}_bad_emotions.png')
+    plt.savefig(f'{sub}_good_emotions.png')
     plt.show()
     plt.close()
 
@@ -105,7 +105,7 @@ def plot_all_reddits_emotions(multi_emotions_by_year, subreddits):
             axs[row, col].set_title(str(subreddits[c-1])[5:-5], fontsize=35)
 
             if len(multi_emotions_by_year) == c:
-                plt.savefig("all_subs_bad_emotions.png")
+                plt.savefig("grid_plot_good_emotions.png")
                 plt.show()
                 plt.close()
                 return None
@@ -117,7 +117,7 @@ if __name__ == '__main__':
     print("Start")
     sdf = pd.read_csv('subreddits.csv')
     subreddits = sdf.values.tolist()
-    emotion_list = ['negative_emotion', 'hate', 'violence', 'death']
+    emotion_list = ['positive_emotion', 'love', 'friends', 'trust']
     multi_emotions_by_year = []
 
     for s in subreddits[1:4]:
@@ -134,5 +134,4 @@ if __name__ == '__main__':
             df = df.append(temp_df, ignore_index=True)
 
     multi_emotions_by_year.append(analyse_some_emotions(df, 'All Subs', emotion_list))
-    print(len(multi_emotions_by_year))
     plot_all_reddits_emotions(multi_emotions_by_year, subreddits)
