@@ -120,7 +120,7 @@ if __name__ == '__main__':
     emotion_list = ['positive_emotion', 'love', 'friends', 'trust']
     multi_emotions_by_year = []
 
-    for s in subreddits[1:4]:
+    for s in subreddits:
         sub = str(s)[5:-5]
 
         temp_df = pd.read_csv(f'{args.src}{sub}_comments.csv')
@@ -128,7 +128,7 @@ if __name__ == '__main__':
 
         multi_emotions_by_year.append(analyse_some_emotions(temp_df, sub, emotion_list))
 
-        if s == subreddits[1]:
+        if s == subreddits[0]:
             df = temp_df
         else:
             df = df.append(temp_df, ignore_index=True)
