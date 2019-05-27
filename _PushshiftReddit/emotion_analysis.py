@@ -6,6 +6,7 @@ import seaborn as sns
 import pandas as pd
 import argparse
 from empath import Empath
+
 lexicon = Empath()
 sns.set()
 
@@ -52,27 +53,30 @@ def analyse_some_emotions(dataframe, sub, emotion_list):
     series = []
     count = 0
 
-    fig, axs = plt.subplots(nrows=2, ncols=(len(emotion_list)), figsize=(30, 20), sharex=True)
-    fig.subplots_adjust(wspace=0.3, hspace=0.3)
+    fig, axs = plt.subplots(nrows=2, ncols=(len(emotion_list)), figsize=(30, 20), sharey=True)
+    #fig.subplots_adjust(wspace=0.3, hspace=0.3)
+    fig.suptitle(sub, y=0.995, fontsize=45)
     for emotion in emotion_list:
         year_serie = dataframe.groupby('year')[emotion].mean()
         month_serie = dataframe.groupby('month')[emotion].mean()
 
         axs[0, count].plot(year_serie, ('-'), color=colors[count], linewidth=6)
-        axs[0, count].set_title(f'{emotion}', fontsize=23)
+        axs[0, count].set_title(f'{emotion}', fontsize=35)
         axs[0, count].set_xlabel("Year", fontsize=20)
         axs[0, count].set_ylabel("Emotion Mean", fontsize=20)
 
         axs[1, count].bar(list(month_serie.index), list(month_serie.values), color=colors[count])
-        axs[1, count].set_title(f'{emotion}', fontsize=23)
+        axs[1, count].set_title(f'{emotion}', fontsize=35)
         axs[1, count].set_xlabel("Month", fontsize=20)
         axs[1, count].set_ylabel("Emotion Mean", fontsize=20)
-        month_list = list(month_serie.index[::10])
+        month_list = list(month_serie.index[::12])
         axs[1, count].set_xticks(month_list)
 
         series.append(year_serie)
         count += 1
 
+    plt.rc('xtick', labelsize=20)
+    plt.rc('ytick', labelsize=30)
     plt.savefig(f'{sub}_bad_emotions.png')
     plt.show()
     plt.close()
@@ -85,17 +89,20 @@ def analyse_some_emotions(dataframe, sub, emotion_list):
 
 def plot_all_reddits_emotions(multi_emotions_by_year, subreddits):
     c = 1
-    collumns = int(len(multi_emotions_by_year) / 1) + 1
-    fig, axs = plt.subplots(nrows=6, ncols=collumns, figsize=(37, 30))
-    fig.subplots_adjust(wspace=0.3, hspace=0.3)
+    collumns = int(len(multi_emotions_by_year) / 6) +1
+    fig, axs = plt.subplots(nrows=6, ncols=5, figsize=(37, 30), sharex=True, sharey=True)
+    fig.subplots_adjust(wspace=0.1, hspace=0.3)
+    plt.rc('xtick', labelsize=40)
+    plt.rc('ytick', labelsize=30)
 
-    for row in range(1):
-        for col in range(collumns):
+    for row in range(6):
+        for col in range(5):
 
-            emotions_by_year = multi_emotions_by_year[collumns*row + col]
+            emotions_by_year = multi_emotions_by_year[c-1]
             emotions = emotions_by_year.melt('year', var_name='cols', value_name='Values')
             sns.barplot(x="year", y="Values", hue='cols', data=emotions,
                         palette='plasma', ax=axs[row, col])
+            axs[row, col].set_title(str(subreddits[c-1])[5:-5], fontsize=35)
 
             if len(multi_emotions_by_year) == c:
                 plt.savefig("all_subs_bad_emotions.png")
@@ -104,7 +111,6 @@ def plot_all_reddits_emotions(multi_emotions_by_year, subreddits):
                 return None
 
             c+=1
-    #g.savefig(f"{args.dst}{sub}_emotions_by_year.png")'''
 
 
 if __name__ == '__main__':
@@ -114,20 +120,19 @@ if __name__ == '__main__':
     emotion_list = ['negative_emotion', 'hate', 'violence', 'death']
     multi_emotions_by_year = []
 
-    for s in subreddits[2:3]:
+    for s in subreddits[1:4]:
         sub = str(s)[5:-5]
-        print(sub)
 
         temp_df = pd.read_csv(f'{args.src}{sub}_comments.csv')
         add_columns(temp_df, sub, emotion_list)
 
         multi_emotions_by_year.append(analyse_some_emotions(temp_df, sub, emotion_list))
 
-        if s == subreddits[2]:
+        if s == subreddits[1]:
             df = temp_df
         else:
             df = df.append(temp_df, ignore_index=True)
 
-    multi_emotions_by_year.append(analyse_some_emotions(df, 'all_subs', emotion_list))
+    multi_emotions_by_year.append(analyse_some_emotions(df, 'All Subs', emotion_list))
     print(len(multi_emotions_by_year))
     plot_all_reddits_emotions(multi_emotions_by_year, subreddits)
