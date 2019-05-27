@@ -52,19 +52,19 @@ def analyse_some_emotions(dataframe, sub, emotion_list):
     series = []
     count = 0
 
-    fig, axs = plt.subplots(nrows=2, ncols=(len(emotion_list)), figsize=(30, 20))
+    fig, axs = plt.subplots(nrows=2, ncols=(len(emotion_list)), figsize=(30, 20), sharex=True)
     fig.subplots_adjust(wspace=0.3, hspace=0.3)
     for emotion in emotion_list:
         year_serie = dataframe.groupby('year')[emotion].mean()
         month_serie = dataframe.groupby('month')[emotion].mean()
 
         axs[0, count].plot(year_serie, ('-'), color=colors[count], linewidth=6)
-        axs[0, count].set_title(f'{sub} {emotion}', fontsize=23)
+        axs[0, count].set_title(f'{emotion}', fontsize=23)
         axs[0, count].set_xlabel("Year", fontsize=20)
         axs[0, count].set_ylabel("Emotion Mean", fontsize=20)
 
         axs[1, count].bar(list(month_serie.index), list(month_serie.values), color=colors[count])
-        axs[1, count].set_title(f'{sub} {emotion}', fontsize=23)
+        axs[1, count].set_title(f'{emotion}', fontsize=23)
         axs[1, count].set_xlabel("Month", fontsize=20)
         axs[1, count].set_ylabel("Emotion Mean", fontsize=20)
         month_list = list(month_serie.index[::10])
@@ -114,7 +114,7 @@ if __name__ == '__main__':
     emotion_list = ['negative_emotion', 'hate', 'violence', 'death']
     multi_emotions_by_year = []
 
-    for s in subreddits[1:4]:
+    for s in subreddits[2:3]:
         sub = str(s)[5:-5]
         print(sub)
 
@@ -123,7 +123,7 @@ if __name__ == '__main__':
 
         multi_emotions_by_year.append(analyse_some_emotions(temp_df, sub, emotion_list))
 
-        if s == subreddits[1]:
+        if s == subreddits[2]:
             df = temp_df
         else:
             df = df.append(temp_df, ignore_index=True)
