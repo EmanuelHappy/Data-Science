@@ -99,7 +99,7 @@ def analyse_some_emotions(dataframe, sub):
         series.append(year_serie)
         count += 1
 
-    plt.rc('xtick', labelsize=20)
+    plt.rc('xtick', labelsize=10)
     plt.rc('ytick', labelsize=30)
     plt.savefig(f'{args.dst}{sub}_good_emotions.png')
     plt.show()
@@ -166,4 +166,6 @@ if __name__ == '__main__':
             df = df.append(temp_df, ignore_index=True)
 
     multi_emotions_by_year.append(analyse_some_emotions(df, 'All Subs'))
+    subreddits.append('.....All Subs....')
+
     plot_all_reddits_emotions(multi_emotions_by_year, subreddits)
