@@ -9,9 +9,6 @@ import pickle
 from gensim.models import CoherenceModel, HdpModel
 from gensim.corpora import Dictionary, MmCorpus
 
-import warnings
-warnings.filterwarnings('ignore')  # Let's clean the output
-
 sdf = pd.read_csv('subreddits.csv')
 subreddits = sdf.values.tolist()
 
