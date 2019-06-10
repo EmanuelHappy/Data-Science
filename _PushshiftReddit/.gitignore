@@ -1,4 +1,4 @@
-
+**/*.csv
 .create_list_of_subbredits.py
 create_list_of_subbredits.py
 **/create_list_of_subbredits.py
