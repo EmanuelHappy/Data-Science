@@ -50,7 +50,8 @@ def add_columns(dataframe, sub):
     for comment in dataframe['Comment']:  # Gives an integer value for each emotion in each comment
         try:
             a = lexicon.analyze(comment)
-            [d[emotion].append(a[emotion]) for emotion in args.emotion_list]  # store the emotions value in the dict
+            [d[emotion].append(a[emotion]/len(comment.split())) for emotion in args.emotion_list]
+            # store the emotions value divided by the # words of each comment 
         except:
             [d[emotion].append(0) for emotion in args.emotion_list]  # if the analyze fail,
             # the comment is considered as a no emotion sentence.
@@ -121,7 +122,7 @@ def plot_all_reddits_emotions(multi_emotions_by_year, subreddits):
     c = 1  # Variable used to run throw all the elements of the lists
     collumns = int(len(multi_emotions_by_year) / 6) + 1  # This variable will be used in latter versions
 
-    fig, axs = plt.subplots(nrows=6, ncols=5, figsize=(37, 30), sharex=True, sharey=True)
+    fig, axs = plt.subplots(nrows=6, ncols=5, figsize=(37, 30))
     fig.subplots_adjust(wspace=0.1, hspace=0.3)
     plt.rc('xtick', labelsize=40)
     plt.rc('ytick', labelsize=30)
