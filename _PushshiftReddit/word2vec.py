@@ -50,7 +50,7 @@ if __name__ == "__main__":
 
         temp_df = pd.read_csv(f'{args.src}{sub}_comments.csv')
 
-        if s == subreddits:
+        if s == subreddits[0]:
             df = temp_df
         else:
             df = df.append(temp_df, ignore_index=True)
