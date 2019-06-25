@@ -20,7 +20,7 @@ parser.add_argument("--parser", dest="parser", type=bool, default=False,
 args = parser.parse_args()
 
 # Disabling Named Entity Recognition and Parser for speed
-if args.parser:
+if not args.parser:
     nlp = spacy.load('en', disable=["ner", "parser"])
 else:
     nlp = spacy.load('en')
@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
     # Cleaning with spacy
     t = time()
-    txt = [cleaning(doc) for doc in nlp.pipe(brief_cleaning, batch_size=5000, n_threads=-1)]
+    txt = [cleaning(doc) for doc in nlp.pipe(brief_cleaning, batch_size=32, n_threads=16)]
     print('Time to clean up everything: {} mins'.format(round((time() - t) / 60, 2)))
 
     # Removing missing values and duplicates
