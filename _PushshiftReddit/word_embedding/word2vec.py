@@ -8,10 +8,10 @@ parser = argparse.ArgumentParser(description="""This script receives a folder co
                                                 pushshift_comments.py and cleans the data for a future word embedding
                                                 representation with of all the comments.""")
 
-parser.add_argument("--src", dest="src", type=str, default="./data/reddit/cm/",
+parser.add_argument("--src", dest="src", type=str, default="./../data/reddit/cm/",
                     help="Source folder created by pushshift-comments.")
 
-parser.add_argument("--dst", dest="dst", type=str, default="./word_embedding/",
+parser.add_argument("--dst", dest="dst", type=str, default="./../word_embedding/",
                     help="Where to save the cleaned dataframe of the word embedding.")
 
 parser.add_argument("--parser", dest="parser", type=bool, default=False,
