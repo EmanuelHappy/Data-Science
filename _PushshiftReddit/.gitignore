@@ -17,6 +17,7 @@ create_list_of_subbredits.py
 **/hdp_model_spacy.gensim.lda_beta.npy
 **/hdp_model_spacy.gensim.m_lambda.npy
 **/hdp_model_spacy.gensim.m_Elogbeta.npy
+**/*.bin
 
 
 
