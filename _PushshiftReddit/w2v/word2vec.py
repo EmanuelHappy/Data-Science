@@ -11,7 +11,7 @@ parser = argparse.ArgumentParser(description="""This script receives a folder co
 parser.add_argument("--src", dest="src", type=str, default="./../data/reddit/cm/",
                     help="Source folder created by pushshift-comments.")
 
-parser.add_argument("--dst", dest="dst", type=str, default="./../word_embedding/",
+parser.add_argument("--dst", dest="dst", type=str, default="",
                     help="Where to save the cleaned dataframe of the word embedding.")
 
 parser.add_argument("--parser", dest="parser", type=bool, default=False,
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     print("Start")
 
     # Loading data from the csv files.
-    sdf = pd.read_csv('subreddits.csv')
+    sdf = pd.read_csv('./../subreddits.csv')
     subreddits = sdf.values.tolist()
 
     for s in subreddits:
@@ -64,9 +64,8 @@ if __name__ == "__main__":
     txt = [cleaning(doc) for doc in nlp.pipe(brief_cleaning, batch_size=32, n_threads=16)]
     print('Time to clean up everything: {} mins'.format(round((time() - t) / 60, 2)))
 
-    # Removing missing values and duplicates
+    # Dataframe from the data
     df_clean = pd.DataFrame({'clean': txt})
-    df_clean = df_clean.dropna().drop_duplicates()
     print(f"Number of comments = {df_clean.shape}")
 
     # Storing data to future analysis
