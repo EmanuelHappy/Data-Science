@@ -1,0 +1,10 @@
+**/*.kv
+**/*.npy
+**/*.bin
+**/*.csv
+**/*.txt
+**/*.index
+**/*.dict
+**/*.gensim
+**/*.mm
+
