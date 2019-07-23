@@ -27,5 +27,7 @@ create_list_of_subbredits.py
 **/*.kv
 **/*.csv
 **/*.mm
+**/*.state
+**/*.id2word
 
 
