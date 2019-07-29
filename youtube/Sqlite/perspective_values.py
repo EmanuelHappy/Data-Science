@@ -31,8 +31,8 @@ parser.add_argument("--end", dest="end", type=int, default="-1",
 parser.add_argument("--commit", dest="commit", type=int, default="10000",
                     help="Commit at some number of iterations.")
 
-parser.add_argument("--loop", dest="loop", type=int, default="5",
-                    help="Free memory and repeat loop.")
+parser.add_argument("--del", dest="del", type=int, default="5",
+                    help="Free memory at this number of iterations.")
 
 args = parser.parse_args()
 
@@ -58,27 +58,26 @@ def add_perspective(db1, db2, url):
         if c < args.init:
             continue
     
+        print(c)
+        
         perspective_values = dict()
 
         data_dict['comment']['text'] = values['text']
 
-        response = requests.post(url=url, data=json.dumps(data_dict), headers={'Connection':'close'})
+        response = requests.post(url=url, data=json.dumps(data_dict))
         response_dict = json.loads(response.content)
-        response.close()
         
         for attr in attributes:
             perspective_values[attr] = response_dict['attributeScores'][attr]['summaryScore']['value']
 
-        db2[id_c] = perspective_values
+        db2[id_c] = perspective_values 
         
         if c % args.commit == 0:
             print(f'Iteration number {c} commited')
             db2.commit()
             
         if c == args.end:
-            break
-            
-        gc.collect()
+            break     
         
     db2.commit()
     db2.close()
