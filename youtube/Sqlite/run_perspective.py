@@ -22,6 +22,9 @@ parser.add_argument("--end", dest="end", type=int, default="-1",
 parser.add_argument("--loop", dest="loop", type=int, default="1",
                     help="Commit at some number of iterations.")
 
+parser.add_argument("--loop2", dest="loop2", type=int, default="1",
+                    help="Commit at some number of iterations.")
+
 args = parser.parse_args()
 
 
@@ -34,7 +37,7 @@ diff = args.end - args.init
 for i in range(args.loop):
     
     
-    cmd = f"python {args.program} --src {args.src} --dst {args.dst} --init {init} --end {end}"
+    cmd = f"python {args.program} --src {args.src} --dst {args.dst} --init {init} --end {end} --loop {args.loop2}"
     os.system(f'echo {cmd}')
     os.system( cmd )
     

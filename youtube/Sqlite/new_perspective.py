@@ -7,9 +7,11 @@ import itertools
 
 from googleapiclient import discovery
 from requests import Session
+from requests_html import HTMLSession
 from multiprocessing import Pool
 from time import time, sleep
 from sqlitedict import SqliteDict
+
 
 parser = argparse.ArgumentParser(description="""This script creates a new sqlite database,
                                                 based on perspective API scores of each youtube comment.""")
@@ -23,7 +25,7 @@ parser.add_argument("--dst", dest="dst", type=str, default="perspective_value.sq
 parser.add_argument("--init", dest="init", type=int, default="0",
                     help="Comment where the analysis begin.")
 
-parser.add_argument("--end", dest="end", type=int, default="-1",
+parser.add_argument("--end", dest="end", type=int, default="1000",
                     help="Comment where the analysis end.")
 
 parser.add_argument("--loop", dest="loop", type=int, default="1",
@@ -34,10 +36,10 @@ args = parser.parse_args()
 # Parameters for the perspective api
 
 attributes = ['TOXICITY', 'SEVERE_TOXICITY', 'IDENTITY_ATTACK', 'INSULT',
-             'PROFANITY', 'THREAT', 'SEXUALLY_EXPLICIT',  'FLIRTATION']
+              'PROFANITY', 'THREAT', 'SEXUALLY_EXPLICIT', 'FLIRTATION']
 
-dict_attributes = {'TOXICITY' :{}, 'SEVERE_TOXICITY':{}, 'IDENTITY_ATTACK':{}, 'INSULT':{},
-             'PROFANITY':{}, 'THREAT':{}, 'SEXUALLY_EXPLICIT':{},  'FLIRTATION':{}}
+dict_attributes = {'TOXICITY': {}, 'SEVERE_TOXICITY': {}, 'IDENTITY_ATTACK': {}, 'INSULT': {},
+                   'PROFANITY': {}, 'THREAT': {}, 'SEXUALLY_EXPLICIT': {}, 'FLIRTATION': {}}
 
 data_dict = {'comment': {'text': ''},
              'languages': ['en'],
@@ -50,10 +52,10 @@ def initialize_worker():
     :return:
     """
     global session_global
-    session_global = Session()
+    session_global = HTMLSession()
 
 
-def process_text(text):
+def process_text(key, text, db):
     """
     Make a perspective request for the text in parallel
     :param text: String that will be analysed by the perspective api
@@ -64,70 +66,22 @@ def process_text(text):
 
     session = session_global
     response = session.post(url=url, json=data_dict)
+    value_dict = SqliteDict(db, tablename="value", journal_mode='OFF')
 
     # The following part was added to slow the # of requests/second, so I can increase the # of multi-processing workers
-    
+
     response_dict = json.loads(response.content)
-    
-    try:
-        for attr in attributes:
-            perspective_values[attr] = response_dict['attributeScores'][attr]['summaryScore']['value']
-    except:
-        print(text)
-        print(response)
-        print(response_dict)
-        
-    return perspective_values
 
-    
-def add_perspective(db1, db2):
-    """
-    Store in the output Database the values of the perspective api for each comment in the input Database
-    :param db1: Input Database
-    :param db2: Output Database
-    :return: None
-    """
-    d1 = time()
-    to_request = [(k, v["text"]) for k, v in itertools.islice(dict_c.items(), args.init, args.end)]
-    id_list, jsons_to_load = zip(*to_request)
-    d2 = time()
+    for attr in attributes:
+        perspective_values[attr] = response_dict['attributeScores'][attr]['summaryScore']['value']
 
-    dif = (args.end - args.init)//args.loop
-    
-    print(f"time to iterate: {round((d2-d1)/60, 2)}")
-    print('Requests initiated')
+    value_dict[key] = perspective_values
+    value_dict.commit()
+    value_dict.close()
+    session.cookies.clear()
 
-    dt = d2 - d1
-    print(dif)
-    for i in range(args.loop):
 
-        if dt<100:
-            sleep(100-dt)
-
-        t_req_i = time()
-        
-        if i != args.loop-1:
-            perspective_list = p.map(process_text, jsons_to_load[dif*i : dif*(i+1)])
-        else:
-            print(len(jsons_to_load[dif*i:]))
-            perspective_list = p.map(process_text, jsons_to_load[dif*i:])
-
-        t_req_e = time()
-        dt = t_req_e - t_req_i
-        print(f"Time to finish the {i+1} requests: {round((dt), 2)}")
-        
-
-        for id_c_out, perspective_value in zip(id_list, perspective_list):
-            db2[id_c_out] = perspective_value
-
-    db2.commit()
-    db2.close()
-
-    return None
-
-    
 if __name__ == '__main__':
-
     print('start')  # FeedBack
 
     # Loading API KEY:
@@ -140,17 +94,31 @@ if __name__ == '__main__':
 
     # Initiating the DataBases:
     dict_c = SqliteDict(args.src, tablename="text", flag="r")
-    value_dict = SqliteDict(args.dst, tablename="value")
+    value_dict = SqliteDict(args.dst, tablename="value", journal_mode='OFF')
 
     # Initiating multi-process pool:
-    workers = 64  # The number 20 was chosen because it best fit the # of requests/second
+    workers = 500  # The number 20 was chosen because it best fit the # of requests/second
     p = Pool(workers, initializer=initialize_worker)
-    
-    time_init = time()
+
+    time_iter = time()
+    print("bla", args.init, args.end)
+    to_request = [(k, v["text"], args.dst) for k, v in itertools.islice(dict_c.items(), args.init, args.end)]
+    time_end = time()
+    dif = (args.end - args.init)//args.loop
+    print(f"Time to iter: {round((time_end - time_iter) / 60, 2)}")
+    for i in range(args.loop):
+        time_init = time()
+        p.starmap(process_text, to_request[i*dif:(i+1)*dif])
+        time_end = time()
+        dt = time_end-time_init
+        print(f"Time to run the {i} loop is {round(dt/60, 2)}")
+        if i != args.loop -1:
+            sleep(100-dt)
 
     # Running Perspective
-    add_perspective(dict_c, value_dict)
-
-    # FeedBack at the end
+    # add_perspective(to_request, dict_c, value_dict, p)
+    #
+    # # FeedBack at the end
     time_end = time()
-    print(f"Time to finish the analysis: {round((time_end-time_init) / 60, 2)}")
+    print(f"Time to finish the analysis: {round((time_end - time_init) / 60, 2)}")
+    
