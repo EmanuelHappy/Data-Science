@@ -88,7 +88,7 @@ def add_perspective(db1, db2):
     :return: None
     """
     d1 = time()
-    to_request = [(k, v["text"]) for k, v in itertools.islice(dict_c.items(), args.init, args.end)]
+    to_request = [(k, v["text"]) for k, v in itertools.islice(db1.items(), args.init, args.end)]
     id_list, jsons_to_load = zip(*to_request)
     d2 = time()
 
@@ -101,15 +101,17 @@ def add_perspective(db1, db2):
     print(dif)
     for i in range(args.loop):
 
-        if dt<100:
-            sleep(100-dt)
+        if dt<110:
+            sleep(110-int(dt))
+        if i == 1:
+            sleep(int(dt))
+        
 
         t_req_i = time()
         
         if i != args.loop-1:
             perspective_list = p.map(process_text, jsons_to_load[dif*i : dif*(i+1)])
         else:
-            print(len(jsons_to_load[dif*i:]))
             perspective_list = p.map(process_text, jsons_to_load[dif*i:])
 
         t_req_e = time()
@@ -139,7 +141,7 @@ if __name__ == '__main__':
     service = discovery.build('commentanalyzer', 'v1alpha1', developerKey=api_key)
 
     # Initiating the DataBases:
-    dict_c = SqliteDict(args.src, tablename="text", flag="r")
+    dict_c = SqliteDict(args.src, tablename="value", flag="r")
     value_dict = SqliteDict(args.dst, tablename="value")
 
     # Initiating multi-process pool:
