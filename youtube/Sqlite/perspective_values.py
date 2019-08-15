@@ -91,6 +91,7 @@ def add_perspective(db1, db2):
     to_request = [(k, v["text"]) for k, v in itertools.islice(db1.items(), args.init, args.end)]
     id_list, jsons_to_load = zip(*to_request)
     d2 = time()
+    print(f"Len id_list = {len(id_list)}")
 
     dif = (args.end - args.init)//args.loop
     
@@ -98,7 +99,6 @@ def add_perspective(db1, db2):
     print('Requests initiated')
 
     dt = d2 - d1
-    print(dif)
     for i in range(args.loop):
 
         if dt<110:
@@ -108,26 +108,30 @@ def add_perspective(db1, db2):
         
 
         t_req_i = time()
-        
         if i != args.loop-1:
             perspective_list = p.map(process_text, jsons_to_load[dif*i : dif*(i+1)])
         else:
             perspective_list = p.map(process_text, jsons_to_load[dif*i:])
 
         t_req_e = time()
+ 
+        if i != args.loop-1:
+            for id_c_out, perspective_value in zip(id_list[dif*i : dif*(i+1)], perspective_list):
+                db2[id_c_out] = perspective_value
+        else:
+            for id_c_out, perspective_value in zip(id_list[dif*i:], perspective_list):
+                db2[id_c_out] = perspective_value
+
+
+
+        db2.commit()
         dt = t_req_e - t_req_i
         print(f"Time to finish the {i+1} requests: {round((dt), 2)}")
-        
 
-        for id_c_out, perspective_value in zip(id_list, perspective_list):
-            db2[id_c_out] = perspective_value
 
     db2.commit()
-    db2.close()
 
-    return None
 
-    
 if __name__ == '__main__':
 
     print('start')  # FeedBack
@@ -142,7 +146,7 @@ if __name__ == '__main__':
 
     # Initiating the DataBases:
     dict_c = SqliteDict(args.src, tablename="value", flag="r")
-    value_dict = SqliteDict(args.dst, tablename="value")
+    value_dict = SqliteDict(args.dst, tablename="value", journal_mode="OFF")
 
     # Initiating multi-process pool:
     workers = 64  # The number 20 was chosen because it best fit the # of requests/second
