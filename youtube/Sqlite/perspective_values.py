@@ -100,13 +100,12 @@ def add_perspective(db1, db2):
 
     dt = d2 - d1
     for i in range(args.loop):
-
-        if dt<110:
-            sleep(110-int(dt))
-        if i == 1:
-            sleep(int(dt))
-        
-
+        if i!=0:
+            if dt > 100:
+               sleep(100)
+            else:
+               sleep(110-dt)
+            
         t_req_i = time()
         if i != args.loop-1:
             perspective_list = p.map(process_text, jsons_to_load[dif*i : dif*(i+1)])
@@ -121,7 +120,6 @@ def add_perspective(db1, db2):
         else:
             for id_c_out, perspective_value in zip(id_list[dif*i:], perspective_list):
                 db2[id_c_out] = perspective_value
-
 
 
         db2.commit()
@@ -149,7 +147,7 @@ if __name__ == '__main__':
     value_dict = SqliteDict(args.dst, tablename="value", journal_mode="OFF")
 
     # Initiating multi-process pool:
-    workers = 64  # The number 20 was chosen because it best fit the # of requests/second
+    workers = 50  # The number 20 was chosen because it best fit the # of requests/second
     p = Pool(workers, initializer=initialize_worker)
     
     time_init = time()

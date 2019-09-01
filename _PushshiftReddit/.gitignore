@@ -29,5 +29,6 @@ create_list_of_subbredits.py
 **/*.mm
 **/*.state
 **/*.id2word
-
+**/secrets.json
+**/*.sqlite
 

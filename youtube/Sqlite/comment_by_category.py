@@ -1,22 +1,29 @@
 from sqlitedict import SqliteDict
 
-splits = [i*10000000 for i in range(8)]
+splits = [i*10000000 for i in range(5, 8)]
 
 actual_category = "none"
-category_dict = SqliteDict(f"./split_texts/non.sqlite", tablename="value", journal_mode="OFF")
+category_dict = SqliteDict(f"./split_texts/AL.sqlite", tablename="value", journal_mode="OFF")
+text_dict = SqliteDict(f"./split_texts/text_dict_{0}.sqlite", tablename="value", flag="r")
 
-for i in splits:
-    text_dict = SqliteDict(f"./split_texts/text_dict_{splits[0]}", tablename="value", flag="r")
-    for id_c, value in text_dict.items():
-        if value["category"] is not actual_category:
-            actual_category = value["category"]
+c = 0;
+try:
+	for num in splits:
+		category_dict.commit()
+		text_dict.close()
+		text_dict = SqliteDict(f"./split_texts/text_dict_{num}.1.sqlite", tablename="value", flag="r")
 
-            category_dict.commit()
-            category_dict.close()
-            category_dict = SqliteDict(f"./split_texts/{actual_category}.sqlite",
-                                       tablename="value", journal_mode="OFF")
+		print(num)
+		for id_c, value in text_dict.items():
+			if value["category"] == "Alt-lite":
+				if c==0:
+					print(c)
+					c = 1
+			
+				category_dict[id_c] = value
 
-        category_dict[id_c] = value
-
+except:
+	category_dict.commit()
+	category_dict.close()
 category_dict.commit()
 category_dict.close()
