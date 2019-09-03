@@ -31,4 +31,4 @@ create_list_of_subbredits.py
 **/*.id2word
 **/secrets.json
 **/*.sqlite
-
+**/*cleaning
