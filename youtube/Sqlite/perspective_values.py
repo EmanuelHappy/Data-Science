@@ -102,9 +102,9 @@ def add_perspective(db1, db2):
     for i in range(args.loop):
         if i!=0:
             if dt > 100:
-               sleep(100)
+                sleep(100)
             else:
-               sleep(110-dt)
+                sleep(110-dt)
             
         t_req_i = time()
         if i != args.loop-1:
