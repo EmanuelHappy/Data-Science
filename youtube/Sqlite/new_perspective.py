@@ -68,8 +68,6 @@ def process_text(key, text, db):
     response = session.post(url=url, json=data_dict)
     value_dict = SqliteDict(db, tablename="value", journal_mode='OFF')
 
-    # The following part was added to slow the # of requests/second, so I can increase the # of multi-processing workers
-
     response_dict = json.loads(response.content)
 
     for attr in attributes:

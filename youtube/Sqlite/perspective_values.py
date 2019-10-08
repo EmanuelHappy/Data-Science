@@ -17,7 +17,8 @@ parser = argparse.ArgumentParser(description="""This script creates a new sqlite
 parser.add_argument("--src", dest="src", type=str, default="/../../../scratch/manoelribeiro/helpers/text_dict.sqlite",
                     help="Sqlite DataBase source of the comments.")
 
-parser.add_argument("--dst", dest="dst", type=str, default="perspective_value.sqlite",
+parser.add_argument("--dst", dest="dst", type=str, default="./../sentiment/perspective/data/sqlite/"
+                                                           "perspective_value.sqlite",
                     help="Sqlite DataBase to store the perspective values.")
 
 parser.add_argument("--init", dest="init", type=int, default="0",
@@ -27,7 +28,8 @@ parser.add_argument("--end", dest="end", type=int, default="-1",
                     help="Comment where the analysis end.")
 
 parser.add_argument("--loop", dest="loop", type=int, default="1",
-                    help="Comment where the analysis end.")
+                    help="Number of loops that perspective will be called."
+                         "Correct: (end-init) / loop == 10000")
 
 args = parser.parse_args()
 
@@ -100,7 +102,7 @@ def add_perspective(db1, db2):
 
     dt = d2 - d1
     for i in range(args.loop):
-        if i!=0:
+        if i != 0:
             if dt > 100:
                 sleep(100)
             else:
@@ -121,11 +123,9 @@ def add_perspective(db1, db2):
             for id_c_out, perspective_value in zip(id_list[dif*i:], perspective_list):
                 db2[id_c_out] = perspective_value
 
-
         db2.commit()
         dt = t_req_e - t_req_i
-        print(f"Time to finish the {i+1} requests: {round((dt), 2)}")
-
+        print(f"Time to finish the {i+1} requests: {round(dt, 2)}")
 
     db2.commit()
 
