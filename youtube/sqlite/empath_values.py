@@ -14,7 +14,7 @@ parser = argparse.ArgumentParser(description="""This script creates a new sqlite
 parser.add_argument("--src", dest="src", type=str, default="/../../../scratch/manoelribeiro/helpers/text_dict.sqlite",
                     help="Source folder of the comments.")
 
-parser.add_argument("--dst", dest="dst", type=str, default="empath_perspective_value.sqlite",
+parser.add_argument("--dst", dest="dst", type=str, default="./../sentiment/empath/sqlite/empath_value.sqlite",
                     help="Where to save the output files.")
 
 parser.add_argument("--init", dest="init", type=int, default="0",
@@ -33,6 +33,7 @@ emotion_list = ['sadness', 'independence', 'positive_emotion', 'family',
                 'masculine', 'feminine', 'violence', 'suffering',
                 'dispute', 'anger', 'envy', 'work', 'politics',
                 'terrorism', 'shame', 'confusion', 'hate']
+
 
 def add_empath(db1, db2):
     c = 0
@@ -57,11 +58,12 @@ def add_empath(db1, db2):
             print(f'Iteration number {c} commited')
             db2.commit()
             
-        if c==args.end:
+        if c == args.end:
             break
 
     db2.commit()
     db2.close()
+
 
 if __name__ == '__main__':
 
@@ -74,4 +76,4 @@ if __name__ == '__main__':
     time_end = time()
     print(f"Time to finish the analysis: {round((time_end-time_init) / 60, 2)}")
 
-    
+

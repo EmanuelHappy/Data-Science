@@ -1,17 +1,14 @@
 import pandas as pd
 import pickle
-from sqlitedict import SqliteDict
 import numpy as np
-from datetime import datetime
-from time import time
-import itertools
 
 name = "control"
 names_control = ["right-center", "center", "left", "left-center", "right1", "right2"]
 names_list = ["Alt-right", "IDW", "Alt-lite", "control"]
-names_list_list = [["Alt-right"], ["IDW"], ["Alt-lite"], names_control]#, names_control]
+names_list_list = [["Alt-right"], ["IDW"], ["Alt-lite"], names_control]
 attributes = ['TOXICITY', 'SEVERE_TOXICITY', 'IDENTITY_ATTACK', 'INSULT',
              'PROFANITY', 'THREAT', 'SEXUALLY_EXPLICIT',  'FLIRTATION']
+
 
 def bootstrap(data, n=1000, func=np.mean):
     """
@@ -27,6 +24,7 @@ def bootstrap(data, n=1000, func=np.mean):
         itersample = np.random.choice(data, size=sample_size, replace=True)
         simulations.append(func(itersample))
     simulations.sort()
+
     def ci(p):
         """
         Return 2-sided symmetric confidence interval specified
@@ -37,7 +35,8 @@ def bootstrap(data, n=1000, func=np.mean):
         l_indx = int(np.floor(n*l_pval))
         u_indx = int(np.floor(n*u_pval))
         return(simulations[l_indx],simulations[u_indx])
-    return(ci)
+
+    return ci
 
 
 
@@ -91,6 +90,7 @@ for names in names_list_list:
                 pickle.dump(d_persp[attr][year], fp, protocol=4)
     c+=1
 exit()        
+"""
 ide = []
 pol = []
 d_emp={2006:[], 2007:[], 2008:[], 2009:[], 2010:[], 2011:[], 2012:[], 2013:[], 2014:[], 2015:[], 2016:[], 2017:[], 2018:[], 2019:[]}
@@ -114,7 +114,7 @@ for fname in filenames:
     print(len(pol), len(ide))
 d_pol = dict(zip(ide, pol))
 print("d_pol", len(d_pol))
-"""
+
 
 for name in names_list:
     print(name)
@@ -184,5 +184,3 @@ for name in names_list:
         #print(len(y_emotion), len(pos), len(y))
     #with open(f"./empath_blob/{name}_pol_empath_prop", "wb") as f:
     #    pickle.dump(y_emotion, f)
-
-    

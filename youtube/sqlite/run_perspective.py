@@ -20,10 +20,11 @@ parser.add_argument("--end", dest="end", type=int, default="-1",
                     help="Comment where the analysis end.")
 
 parser.add_argument("--loop", dest="loop", type=int, default="1",
-                    help="Commit at some number of iterations.")
+                    help="Number of times the system will be called to run the code.")
 
 parser.add_argument("--loop2", dest="loop2", type=int, default="1",
-                    help="Commit at some number of iterations.")
+                    help="Number of loops that perspective will execute the code."
+                         "Correct: (end-init) / loop2 == 10000")
 
 args = parser.parse_args()
 
@@ -35,13 +36,10 @@ end = args.end
 diff = args.end - args.init 
 
 for i in range(args.loop):
-    
-    
     cmd = f"python {args.program} --src {args.src} --dst {args.dst} --init {init} --end {end} --loop {args.loop2}"
     os.system(f'echo {cmd}')
-    os.system( cmd )
-    
+    os.system(cmd)
     
     init += diff
     end += diff
-    
+
