@@ -30,7 +30,7 @@ parser.add_argument("--loop", dest="loop", type=int, default="10",
                     help="Comment where the analysis end.")
 parser.add_argument("--new", dest="new", type=int, default="1",
                     help="Comment where the analysis end.")
-parser.add_argument("--cat", dest="cat", type=str, default="Alt-lite",
+parser.add_argument("--cat", dest="cat", type=str, default="Intellectual\ Dark\ Web",
                     help="Comment where the analysis end.")
 
 
