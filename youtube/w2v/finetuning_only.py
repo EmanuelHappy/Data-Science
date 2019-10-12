@@ -46,7 +46,7 @@ for year in years:
 
     cores = multiprocessing.cpu_count() # Count the number of cores in a computer
 
-    parameters = dict(min_count=30,
+    parameters = dict(min_count=50,
                          window=2,
                          size=300,
                          sample=6e-5, 

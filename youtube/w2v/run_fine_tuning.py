@@ -51,7 +51,7 @@ for i in [2015, 2017, 2018, 2019]:
         cmd = f"python finetuning_only.py --year {i} --epoch 0 --cat {args.cat}"
         os.system(f'echo {cmd}')
         os.system( cmd )
-    for j in range(30):
+    for j in range(20):
         print(j)
         cmd = f"python finetuning_only.py --year {i} --epoch {args.ep + j} --loop {args.loop} --cat {args.cat}"
         os.system(f'echo {cmd}')
